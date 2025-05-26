@@ -3,9 +3,9 @@ from math import floor
 from pprint import pprint
 import random
 
-base_x = 430
+base_x = 438
 base_y = 630
-material = 4
+material = 4.9
 
 step=100
 height=70
