@@ -1,12 +1,13 @@
 from openscad import *
 from math import floor
+from pprint import pprint
 import random
 
 base_x = 430
-base_y = 620
+base_y = 630
 material = 4
 
-step=70
+step=100
 height=70
 hole_diam=20
 cut=height/2
@@ -67,24 +68,7 @@ def path_y(height,material,count_y,dist_y,x_offset_m=600, y_offset_m=0,hole_diam
     
     path.append([x_offset_m + end_x,y_offset_m+height])
     path.append([x_offset_m + end_x,y_offset_m+0])    
-    
-    
-#    hole_y = y_offset_m + (height/2)
-#
-#    holes = []
-#    hole = circle(hole_diam).translate([x_offset_m - 7*(dist_y/2),hole_y])
-#    for i in range(2,count_y+7):
-#        print(i)
-#        #hole_x = x_offset_m + (i*dist_y) - y_offset_m + (height/2) - 4
-##        print(f'Hole {i}:  { hole_x } { hole_y} { i*dist_y }')
-#        #the_hole=circle(hole_diam).translate([x_offset_m + (i*dist_y) - y_offset_m + hole_y-4,hole_y])
-#        the_hole = hole.right(i*dist_y)
-#        holes.append(the_hole)
-##
-##    print(holes)
-    
 
-    
     return(polygon(path))
 
 
@@ -101,7 +85,7 @@ for i in range(0,count_y-1):
 holeys = []
 x_offset_again = 600
 hole = circle(hole_diam).translate([x_offset_again + (dist_x/2),height/2])
-holeys.append(hole)
+#holeys.append(hole)
 max_rand_x = int(floor(((dist_x/2) - hole_diam - 10)))
 max_rand_y = int(floor(((height/2) - hole_diam - 10)))
 
@@ -109,11 +93,14 @@ print(f"Rand_x: {max_rand_x}")
 print(f"Rand_y: {max_rand_y}")
 
 for x in range(0,count_y):
-    for y in range(0,count_x-1):
+    for y in range(0,count_x):
+        print(f"{x} {y}")
         rand_x = random.randint(-max_rand_x,max_rand_x)
         rand_y = random.randint(-max_rand_y,max_rand_y)
         holeys.append(hole.right((x*(dist_y))+rand_x).back((y*(height+1))+rand_y))
     
+pprint(holeys)
+
 for i in range(0,count_x-1):       
     out.append(path_y(height,material,count_y,dist_y,x_offset_m=x_offset_again, y_offset_m=i*(height+1)).difference(holeys))
     
